@@ -10,5 +10,3 @@ EXPOSE 5000
 
 COPY . .
 CMD ["flask", "run", "--host", "0.0.0.0"]
-
-# docker build -t location-service . && docker tag location-service ericcgu/nd064-location-producer:1.0.0 && docker push ericcgu/nd064-location-producer:1.0.0

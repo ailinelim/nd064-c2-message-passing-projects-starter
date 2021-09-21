@@ -44,6 +44,7 @@ The command will take a while and will leverage VirtualBox to load an [openSUSE]
 After `vagrant up` is done, you will SSH into the Vagrant environment and retrieve the Kubernetes config file used by `kubectl`. We want to copy the contents of this file into our local environment so that `kubectl` knows how to communicate with the K3s cluster.
 ```bash
 $ vagrant ssh
+sudo su -
 ```
 You will now be connected inside of the virtual OS. Run `sudo cat /etc/rancher/k3s/k3s.yaml` to print out the contents of the file. You should see output similar to the one that I've shown below. Note that the output below is just for your reference: every configuration is unique and you should _NOT_ copy the output I have below.
 
@@ -54,7 +55,7 @@ $ sudo cat /etc/rancher/k3s/k3s.yaml
 apiVersion: v1
 clusters:
 - cluster:
-    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJWekNCL3FBREFnRUNBZ0VBTUFvR0NDcUdTTTQ5QkFNQ01DTXhJVEFmQmdOVkJBTU1HR3N6Y3kxelpYSjIKWlhJdFkyRkFNVFU1T1RrNE9EYzFNekFlRncweU1EQTVNVE13T1RFNU1UTmFGdzB6TURBNU1URXdPVEU1TVROYQpNQ014SVRBZkJnTlZCQU1NR0dzemN5MXpaWEoyWlhJdFkyRkFNVFU1T1RrNE9EYzFNekJaTUJNR0J5cUdTTTQ5CkFnRUdDQ3FHU000OUF3RUhBMElBQk9rc2IvV1FEVVVXczJacUlJWlF4alN2MHFseE9rZXdvRWdBMGtSN2gzZHEKUzFhRjN3L3pnZ0FNNEZNOU1jbFBSMW1sNXZINUVsZUFOV0VTQWRZUnhJeWpJekFoTUE0R0ExVWREd0VCL3dRRQpBd0lDcERBUEJnTlZIUk1CQWY4RUJUQURBUUgvTUFvR0NDcUdTTTQ5QkFNQ0EwZ0FNRVVDSVFERjczbWZ4YXBwCmZNS2RnMTF1dCswd3BXcWQvMk5pWE9HL0RvZUo0SnpOYlFJZ1JPcnlvRXMrMnFKUkZ5WC8xQmIydnoyZXpwOHkKZ1dKMkxNYUxrMGJzNXcwPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJlRENDQVIyZ0F3SUJBZ0lCQURBS0JnZ3Foa2pPUFFRREFqQWpNU0V3SHdZRFZRUUREQmhyTTNNdGMyVnkKZG1WeUxXTmhRREUyTXpFMk56UTJOelV3SGhjTk1qRXdPVEUxTURJMU56VTFXaGNOTXpFd09URXpNREkxTnpVMQpXakFqTVNFd0h3WURWUVFEREJock0zTXRjMlZ5ZG1WeUxXTmhRREUyTXpFMk56UTJOelV3V1RBVEJnY3Foa2pPClBRSUJCZ2dxaGtqT1BRTUJCd05DQUFSQ3pQQXpnVFJCejRudDVlQ0xTclJyOXdkRzJaa1A4MGFkU2dFNlNMRlcKZ1VPejJaMWp5aWNycjZsdzROSC9NKy9OMGxxMGwwTlo0TkltNDJPdnd3V2lvMEl3UURBT0JnTlZIUThCQWY4RQpCQU1DQXFRd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBZEJnTlZIUTRFRmdRVWJLOXNabHF4WlJydGdLNXZtajVsClVkZStNWkF3Q2dZSUtvWkl6ajBFQXdJRFNRQXdSZ0loQUpKajdPTUEvYnhPUVdJeUhuQWx6NGQ5RHNtalZqaTQKNFVKRWRyeE5WV1U0QWlFQThGR2EyODkzMDQ4cXhBbUN4YzEvVDlobXpHUGsyc3lVUGhKSm5iaURSODg9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
     server: https://127.0.0.1:6443
   name: default
 contexts:
@@ -68,21 +69,29 @@ preferences: {}
 users:
 - name: default
   user:
-    password: 485084ed2cc05d84494d5893160836c9
-    username: admin
+    client-certificate-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJrakNDQVRlZ0F3SUJBZ0lJSlZ3WG5PY3hHb1l3Q2dZSUtvWkl6ajBFQXdJd0l6RWhNQjhHQTFVRUF3d1kKYXpOekxXTnNhV1Z1ZEMxallVQXhOak14TmpjME5qYzFNQjRYRFRJeE1Ea3hOVEF5TlRjMU5Wb1hEVEl5TURreApOVEF5TlRjMU5Wb3dNREVYTUJVR0ExVUVDaE1PYzNsemRHVnRPbTFoYzNSbGNuTXhGVEFUQmdOVkJBTVRESE41CmMzUmxiVHBoWkcxcGJqQlpNQk1HQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJQcmdxL2thejJCajJvVDIKUkMrNlM1WjVpK1VLeVZ2RzhmMUV2aXpKRHVnYkdrcXNzN0tLdnBlbTRxU0JqdHR3MFQwcEVFRlJFSU9uTmNzZgpsTVBjS0pxalNEQkdNQTRHQTFVZER3RUIvd1FFQXdJRm9EQVRCZ05WSFNVRUREQUtCZ2dyQmdFRkJRY0RBakFmCkJnTlZIU01FR0RBV2dCUVZXelhNV2JyYjlxWEVaVTd6aUhHN3ljdFJ3ekFLQmdncWhrak9QUVFEQWdOSkFEQkcKQWlFQWpvcGE4ancrT05iV1VxZnBhcUgxMWlMRWxKd0VFRWFxbVJpYmJRQVZGNjhDSVFEaENoekk5ZWZkaGoxcQpjZHRlZWNUNkZoT2srdjgzdmx6aVFjY3BOTmJ1NFE9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCi0tLS0tQkVHSU4gQ0VSVElGSUNBVEUtLS0tLQpNSUlCZGpDQ0FSMmdBd0lCQWdJQkFEQUtCZ2dxaGtqT1BRUURBakFqTVNFd0h3WURWUVFEREJock0zTXRZMnhwClpXNTBMV05oUURFMk16RTJOelEyTnpVd0hoY05NakV3T1RFMU1ESTFOelUxV2hjTk16RXdPVEV6TURJMU56VTEKV2pBak1TRXdId1lEVlFRRERCaHJNM010WTJ4cFpXNTBMV05oUURFMk16RTJOelEyTnpVd1dUQVRCZ2NxaGtqTwpQUUlCQmdncWhrak9QUU1CQndOQ0FBUXJTdk1CZ3hJZjU3M3doVW5DL0NkeEpkMFJjQXVUcTJodGgya2lybXV5CnFsWTdWN3diNmRyZERFcVNCS1RJcHlSdU84b0l1VDdFYVlkQXl5NWR4V1p4bzBJd1FEQU9CZ05WSFE4QkFmOEUKQkFNQ0FxUXdEd1lEVlIwVEFRSC9CQVV3QXdFQi96QWRCZ05WSFE0RUZnUVVGVnMxekZtNjIvYWx4R1ZPODRoeAp1OG5MVWNNd0NnWUlLb1pJemowRUF3SURSd0F3UkFJZ2ZnOVNrWVloaWJSK21QMFBlTEQ0WGpzVVhtVms3OFlwCjloWDcxeG4reWdzQ0lIYUtVRE11eDdMOFJORjNGTStIdVo0ajFBRGpDdWd2RTZLMksvQ2ZpZDdMCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    client-key-data: LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSUt4OVh2b1FBK0h5elJ3UzdyT1g3NlFKVTFCOTRXbDk1NzRQVUNZNWtvblRvQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFK3VDcitSclBZR1BhaFBaRUw3cExsbm1MNVFySlc4YngvVVMrTE1rTzZCc2FTcXl6c29xKwpsNmJpcElHTzIzRFJQU2tRUVZFUWc2YzF5eCtVdzl3b21nPT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=
 ```
 Type `exit` to exit the virtual OS and you will find yourself back in your computer's session. Create the file (or replace if it already exists) `~/.kube/config` and paste the contents of the `k3s.yaml` output here.
 
 Afterwards, you can test that `kubectl` works by running a command like `kubectl describe services`. It should not return any errors.
 
-### Steps
-1. `kubectl apply -f deployment/db-configmap.yaml` - Set up environment variables for the pods
-2. `kubectl apply -f deployment/db-secret.yaml` - Set up secrets for the pods
-3. `kubectl apply -f deployment/postgres.yaml` - Set up a Postgres database running PostGIS
+### Steps for Deploying Services
+1. `curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash` - Install Helm
+2. `helm repo add bitnami https://charts.bitnami.com/bitnami ` - Add bitnami repo for helm
+3. `kubectl apply -f deployment/udaconnect-kafka.yaml` - Install bitnami/kafka deployment with helm
 4. `kubectl apply -f deployment/udaconnect-api.yaml` - Set up the service and deployment for the API
 5. `kubectl apply -f deployment/udaconnect-app.yaml` - Set up the service and deployment for the web app
-6. `sh scripts/run_db_command.sh <POD_NAME>` - Seed your database against the `postgres` pod. (`kubectl get pods` will give you the `POD_NAME`)
-
+6. `kubectl apply -f deployment/db-configmap.yaml` - Set up environment variables for the pods
+7. `kubectl apply -f deployment/db-secret.yaml` - Set up secrets for the pods
+8. `kubectl apply -f deployment/postgres.yaml` - Set up a Postgres database running PostGIS
+9. `sh scripts/run_db_command.sh <POD_NAME>` - Seed your database against the `postgres` pod. (`kubectl get pods` will give you the `POD_NAME`)
+The following section will continue apply after Docker images deployed
+10. `kubectl apply -f deployment/udaconnect-person.yaml` - Set up the service and deployment for the Person API
+11. `kubectl apply -f deployment/udaconnect-connections.yaml` - Set up the service and deployment for Connection the API
+12. `kubectl apply -f deployment/udaconnect-location-producer.yaml` - Set up the service and deployment for the Location Producer API
+13. `kubectl apply -f deployment/udaconnect-location-consumer.yaml` - Set up the deployment for the Location Consumer app (make sure Kafka running)
+ 
 Manually applying each of the individual `yaml` files is cumbersome but going through each step provides some context on the content of the starter project. In practice, we would have reduced the number of steps by running the command against a directory to apply of the contents: `kubectl apply -f deployment/`.
 
 Note: The first time you run this project, you will need to seed the database with dummy data. Use the command `sh scripts/run_db_command.sh <POD_NAME>` against the `postgres` pod. (`kubectl get pods` will give you the `POD_NAME`). Subsequent runs of `kubectl apply` for making changes to deployments or services shouldn't require you to seed the database again!
@@ -112,8 +121,34 @@ As a reminder, each module should have:
 3. `requirements.txt` for `pip` packages
 4. `__init__.py`
 
-### Docker Images
-`udaconnect-app` and `udaconnect-api` use docker images from `isjustintime/udaconnect-app` and `isjustintime/udaconnect-api`. To make changes to the application, build your own Docker image and push it to your own DockerHub repository. Replace the existing container registry path with your own.
+### Docker Images Deployment
+udaconnect-app and udaconnect-api use docker images from isjustintime/udaconnect-app and isjustintime/udaconnect-api. To make changes to the application, build your own Docker image and push it to your own DockerHub repository. Replace the existing container registry path with your own.
+
+1. `docker build -t udaconnect-person . `
+2. `docker build -t udaconnect-connections . `
+3. `docker build -t udaconnect-location-producer . `
+4. `docker build -t udaconnect-location-consumer . `
+5. `docker run -it -d -p 30002:5002 udaconnect-person` 
+6. `docker run -it -d -p 30006:5006 udaconnect-connections` 
+7. `docker run -it -d -p 30005:5005 udaconnect-location-producer`
+8. `docker run -it -d -p 30004:5004 udaconnect-location-consumer`
+9. `docker build --no-cache -t ailinelim/udaconnect-frontend .`
+10. `docker tag udaconnect-person ailinelim/udaconnect-person:latest`
+11. `docker tag udaconnect-connections ailinelim/udaconnect-connections:latest`
+12. `docker tag udaconnect-location-producer ailinelim/udaconnect-location-producer:latest`
+13. `docker tag udaconnect-location-consumer ailinelim/udaconnect-location-consumer:latest`
+14. `docker push ailinelim/udaconnect-person:latest`  
+15. `docker push ailinelim/udaconnect-connections:latest`  
+16. `docker push ailinelim/udaconnect-location-producer:latest`
+17. `docker push ailinelim/udaconnect-location-consumer:latest`
+18. `docker push ailinelim/udaconnect-frontend:latest`
+19. `docker ps docker logs <pod name>`
+
+## gRPC
+Create gRPC files: 
+```bash
+python -m grpc_tools.protoc -I./ --python_out=./ --grpc_python_out=./ locations.proto`udaconnect-app` and `udaconnect-api` 
+```
 
 ## Configs and Secrets
 In `deployment/db-secret.yaml`, the secret variable is `d293aW1zb3NlY3VyZQ==`. The value is simply encoded and not encrypted -- this is ***not*** secure! Anyone can decode it to see what it is.
@@ -130,12 +165,14 @@ This is okay for development against an exclusively local environment and we wan
 The database uses a plug-in named PostGIS that supports geographic queries. It introduces `GEOMETRY` types and functions that we leverage to calculate distance between `ST_POINT`'s which represent latitude and longitude.
 
 _You may find it helpful to be able to connect to the database_. In general, most of the database complexity is abstracted from you. The Docker container in the starter should be configured with PostGIS. Seed scripts are provided to set up the database table and some rows.
+
 ### Database Connection
 While the Kubernetes service for `postgres` is running (you can use `kubectl get services` to check), you can expose the service to connect locally:
 ```bash
 kubectl port-forward svc/postgres 5432:5432
 ```
 This will enable you to connect to the database at `localhost`. You should then be able to connect to `postgresql://localhost:5432/geoconnections`. This is assuming you use the built-in values in the deployment config map.
+
 ### Software
 To manually connect to the database, you will need software compatible with PostgreSQL.
 * CLI users will find [psql](http://postgresguide.com/utilities/psql.html) to be the industry standard.
@@ -150,3 +187,6 @@ Your architecture diagram should focus on the services and how they talk to one 
 ## Tips
 * We can access a running Docker container using `kubectl exec -it <pod_id> sh`. From there, we can `curl` an endpoint to debug network issues.
 * The starter project uses Python Flask. Flask doesn't work well with `asyncio` out-of-the-box. Consider using `multiprocessing` to create threads for asynchronous behavior in a standard Flask application.
+
+
+

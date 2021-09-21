@@ -1,0 +1,30 @@
+This is an enhanced POC application into a MVP to handle the large volume of location data that will be ingested.
+The following is the refactored a monolith application into microservice architecture using message passing techniques that learned from this course:-
+
+REST API
+- Apply on the CONNECTION SERVICE is responsible for the algorithm computation of finding the nearest/closed by person who have shared close geographic proximity (person, date, proximity) 
+  which meaning we need consistency with PERSON SERVICE where it can combines Person and Location Data to build connection service. And finding this is the easiest to send a regular HTTP request to a REST endpoint and used by the FRONT-END SERVICE.
+- Apply on PERSON SERVICE is responsible for creating and retrieving new users, and for this POC as no need for scaling up, so the next upgrade for this part will be apply gRPC in the near future 
+  because the capacity of Person data will be increased.
+
+gRPC/Kafka
+The LOCATION PRODUCER would able to handling the large volume of location data through protobuf/gRPC to KAFKA queue. Using gRPC will also guarantee the Kafka events format and make it more predictable 
+when LOCATION CONSUMER consumes events to write to the database.
+
+Kafka
+The LOCATION CONSUMER service is designed to subscribe and consume the location topic on the KAFKA queue, once receiving messages, the LOCATION CONSUMER will persist LOCATION DATA in the database. 
+In addition, a KAFKA queue is used to provide even better scalability.
+
+PostgreSQL
+PostgreSQL is a powerful, open source object-relational database system, so recommended to stay as it is for storing Person, Connectivity and Location tables. 
+
+
+Additionally, there is a FRONT-END SERVICE which is a platform that provide UI for end-user (either in Mobile App/Web-UI) such as Person and Connection endpoint in order to populate the data response. 
+We will need a another service which preferably by a separate development team to work on this part.
+
+
+The above project is designed as an MVP and does not include any unnecessary features
+
+- Cost and development time are minimized
+- Services should run in containers
+- Design should be able to handle ingress of a large volume of data

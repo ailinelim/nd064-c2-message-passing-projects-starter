@@ -1,0 +1,25 @@
+The gRPC documentation for Location-Event microservice.
+The request has a payload with userId, latitude and longitude.
+
+To make a sample request, please have a look in the file in the modules folder.
+modules/location-producer/app/grpc_client.py
+
+This python file is ready to send a request to the location-event service deployed into kubernetes through gRPC 
+
+'''
+message LocationMessage {
+  string userId = "100";
+  float latitude = 25.11;
+  float longitude = 33.22;
+}
+
+service LocationService {
+  rpc Create(LocationMessage) returns (LocationMessage);
+}
+'''
+
+### Sample request
+
+1. kubectl get pods
+2. kubectl exec -it udaconnect-location-producer-[POD_ID] bash
+3. python app/grpc_client.py
