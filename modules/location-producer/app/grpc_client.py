@@ -4,8 +4,6 @@ import location_pb2_grpc
 
 
 # Simulates sending of coordinates from e.g. a mobile device
-print("Sending coordinates")
-
 channel = grpc.insecure_channel("localhost:5005")
 stub = location_pb2_grpc.LocationServiceStub(channel)
 
@@ -24,6 +22,3 @@ user_location_2 = location_pb2.LocationMessage(
 
 response1 = stub.Create(user_location_1)
 response2 = stub.Create(user_location_2)
-
-print("Coordinates sent...")
-print(user_location_1, user_location_2)
